@@ -77,6 +77,9 @@ class InvertedTView (ctx : Context) : View(ctx) {
             val w : Float = canvas.width.toFloat()
             val h : Float = canvas.height.toFloat()
             val size : Float = Math.min(w,h)/10
+            paint.color = Color.parseColor("#43A047")
+            paint.strokeWidth = size/5
+            paint.strokeCap = Paint.Cap.ROUND
             canvas.save()
             canvas.translate(w/2, h/2)
             for (i in 0..2) {
@@ -95,6 +98,25 @@ class InvertedTView (ctx : Context) : View(ctx) {
         }
         fun startUpdating(startcb : () -> Unit) {
             state.startUpdating(startcb)
+        }
+    }
+
+    data class Renderer(var view : InvertedTView) {
+        val invertedT : InvertedT = InvertedT(0)
+        val animator : Animator = Animator(view)
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            invertedT.draw(canvas, paint)
+            animator.animate {
+                invertedT.update {
+                    animator.stop()
+                }
+            }
+        }
+        fun handleTap() {
+            invertedT.startUpdating {
+                animator.start()
+            }
         }
     }
 }
