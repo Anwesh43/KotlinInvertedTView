@@ -71,4 +71,30 @@ class InvertedTView (ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class InvertedT (var i : Int, val state : State = State()) {
+        fun draw(canvas : Canvas, paint : Paint) {
+            val w : Float = canvas.width.toFloat()
+            val h : Float = canvas.height.toFloat()
+            val size : Float = Math.min(w,h)/10
+            canvas.save()
+            canvas.translate(w/2, h/2)
+            for (i in 0..2) {
+                canvas.save()
+                canvas.rotate(90f * i * this.state.scales[1])
+                canvas.save()
+                canvas.translate(-(h/2 + size) * this.state.scales[2], 0f)
+                canvas.drawLine(0f, 0f, -size * this.state.scales[0], 0f, paint)
+                canvas.restore()
+                canvas.restore()
+            }
+            canvas.restore()
+        }
+        fun update(stopcb : (Float) -> Unit) {
+            state.update(stopcb)
+        }
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+    }
 }
