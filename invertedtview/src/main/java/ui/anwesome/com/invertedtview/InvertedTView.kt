@@ -4,6 +4,7 @@ package ui.anwesome.com.invertedtview
  * Created by anweshmishra on 08/04/18.
  */
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.*
 import android.view.View
@@ -118,6 +119,14 @@ class InvertedTView (ctx : Context) : View(ctx) {
             invertedT.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : InvertedTView {
+            val view : InvertedTView = InvertedTView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
